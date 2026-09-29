@@ -1,8 +1,4 @@
-from auth import (
-    register_user,
-    login_user,
-    admin_login,
-)
+from auth import register_user, login_user, admin_login
 
 from quiz_engine import start_quiz
 
@@ -39,9 +35,8 @@ try:
 
     AI_AVAILABLE = True
 
-except Exception as exc:
+except Exception:
     AI_AVAILABLE = False
-    AI_IMPORT_ERROR = exc
 
 
 # ==========================================
@@ -89,7 +84,6 @@ def run_local_quiz(username):
         )
 
         if result:
-
             result["performance"] = (
                 performance_classification(
                     result["percentage"]
@@ -98,13 +92,10 @@ def run_local_quiz(username):
 
             save_quiz_result(result)
 
-            print(
-                "\nQuiz completed successfully."
-            )
-
     except Exception as exc:
+
         print(
-            "Quiz error:",
+            "Local quiz error:",
             exc,
         )
 
@@ -115,7 +106,9 @@ def run_local_quiz(username):
 
 def run_api_quiz(username):
 
-    print("\n=== ONLINE API QUIZ ===")
+    print(
+        "\n=== ONLINE API QUIZ ==="
+    )
 
     try:
 
@@ -144,9 +137,11 @@ def run_api_quiz(username):
         )
 
         if not questions:
+
             print(
                 "No questions returned."
             )
+
             return
 
         import quiz_engine
@@ -166,29 +161,29 @@ def run_api_quiz(username):
 
             answers.append(
                 {
-                    "question":
-                        question["question"],
+                    "question": question[
+                        "question"
+                    ],
 
-                    "selected":
-                        selected,
+                    "selected": selected,
 
-                    "correct":
-                        question["answer"],
+                    "correct": question[
+                        "answer"
+                    ],
 
-                    "options":
-                        question["options"],
+                    "options": question[
+                        "options"
+                    ],
 
-                    "category":
-                        question.get(
-                            "category",
-                            "General",
-                        ),
+                    "category": question.get(
+                        "category",
+                        "General",
+                    ),
 
-                    "difficulty":
-                        question.get(
-                            "difficulty",
-                            "Medium",
-                        ),
+                    "difficulty": question.get(
+                        "difficulty",
+                        "Medium",
+                    ),
                 }
             )
 
@@ -197,28 +192,23 @@ def run_api_quiz(username):
         )
 
         result = {
-            "username":
-                username,
 
-            "score":
-                score,
+            "username": username,
 
-            "total":
-                len(questions),
+            "score": score,
 
-            "percentage":
-                percentage,
+            "total": len(questions),
+
+            "percentage": percentage,
 
             "performance":
                 performance_classification(
                     percentage
                 ),
 
-            "answers":
-                answers,
+            "answers": answers,
 
-            "source":
-                "Open Trivia DB",
+            "source": "Open Trivia DB",
         }
 
         save_quiz_result(result)
@@ -252,25 +242,15 @@ def run_api_quiz(username):
 
 def _latest_result(username):
 
-    try:
-        results = load_results()
-
-    except Exception as exc:
-        print(
-            "Could not load results:",
-            exc,
-        )
-        return None
-
-    user_results = [
+    results = [
         result
-        for result in results
+        for result in load_results()
         if result.get("username") == username
     ]
 
     return (
-        user_results[-1]
-        if user_results
+        results[-1]
+        if results
         else None
     )
 
@@ -288,7 +268,7 @@ def ai_menu(username):
         )
 
         print(
-            "Make sure you have installed:"
+            "Install dependencies with:"
         )
 
         print(
@@ -297,7 +277,7 @@ def ai_menu(username):
 
         print(
             "Also make sure GEMINI_API_KEY "
-            "is configured in your .env file."
+            "is configured."
         )
 
         return
@@ -350,10 +330,7 @@ def ai_menu(username):
             if not result:
 
                 print(
-                    "No results available."
-                )
-
-                print(
+                    "No results available. "
                     "Take a quiz first."
                 )
 
@@ -368,11 +345,7 @@ def ai_menu(username):
                 )
 
                 print(
-                    "\n=== AI PERFORMANCE ANALYSIS ==="
-                )
-
-                print(
-                    analysis
+                    "\n" + analysis
                 )
 
             except Exception as exc:
@@ -396,10 +369,7 @@ def ai_menu(username):
             if not result:
 
                 print(
-                    "No results available."
-                )
-
-                print(
+                    "No results available. "
                     "Take a quiz first."
                 )
 
@@ -408,15 +378,17 @@ def ai_menu(username):
             wrong = [
 
                 answer
-
                 for answer
                 in result.get(
                     "answers",
                     []
                 )
 
-                if answer.get("selected")
-                != answer.get("correct")
+                if answer.get(
+                    "selected"
+                ) != answer.get(
+                    "correct"
+                )
             ]
 
             if not wrong:
@@ -428,24 +400,14 @@ def ai_menu(username):
 
                 continue
 
-            print(
-                "\n=== AI WRONG-ANSWER EXPLANATIONS ==="
-            )
-
             for number, item in enumerate(
                 wrong,
                 1,
             ):
 
                 print(
-                    f"\nQuestion {number}:"
-                )
-
-                print(
-                    item.get(
-                        "question",
-                        ""
-                    )
+                    f"\n--- Wrong Answer "
+                    f"{number} ---"
                 )
 
                 try:
@@ -453,23 +415,10 @@ def ai_menu(username):
                     explanation = (
                         explain_answer(
                             item["question"],
-                            item.get(
-                                "selected",
-                                ""
-                            ),
-                            item.get(
-                                "correct",
-                                ""
-                            ),
-                            item.get(
-                                "options",
-                                {}
-                            ),
+                            item["selected"],
+                            item["correct"],
+                            item["options"],
                         )
-                    )
-
-                    print(
-                        "\nAI Explanation:"
                     )
 
                     print(
@@ -483,6 +432,8 @@ def ai_menu(username):
                         exc,
                     )
 
+                    break
+
 
         # ==================================
         # 3. AI PRACTICE QUESTIONS
@@ -494,17 +445,12 @@ def ai_menu(username):
                 "Topic: "
             ).strip()
 
-            if not topic:
-
-                print(
-                    "Topic cannot be empty."
-                )
-
-                continue
-
-            difficulty = input(
-                "Difficulty Easy/Medium/Hard: "
-            ).strip() or "Medium"
+            difficulty = (
+                input(
+                    "Difficulty Easy/Medium/Hard: "
+                ).strip()
+                or "Medium"
+            )
 
             try:
 
@@ -515,12 +461,6 @@ def ai_menu(username):
                     )
                 )
 
-                if not 1 <= amount <= 10:
-
-                    raise ValueError(
-                        "Amount must be between 1 and 10."
-                    )
-
                 questions = (
                     generate_practice_questions(
                         topic,
@@ -529,26 +469,14 @@ def ai_menu(username):
                     )
                 )
 
-                if not questions:
-
-                    print(
-                        "No questions were generated."
-                    )
-
-                    continue
-
                 added = import_questions(
                     questions
                 )
 
                 print(
-                    f"\nGenerated {len(questions)} "
-                    "AI practice question(s)."
-                )
-
-                print(
                     f"Added {added} "
-                    "question(s) to the local bank."
+                    "AI-generated questions "
+                    "to the local bank."
                 )
 
             except Exception as exc:
@@ -588,10 +516,7 @@ def ai_menu(username):
                 )
 
                 if not 1 <= days <= 30:
-
-                    raise ValueError(
-                        "Days must be between 1 and 30."
-                    )
+                    raise ValueError
 
                 plan = generate_study_plan(
                     result,
@@ -599,11 +524,14 @@ def ai_menu(username):
                 )
 
                 print(
-                    "\n=== AI STUDY PLAN ==="
+                    "\n" + plan
                 )
 
+            except ValueError:
+
                 print(
-                    plan
+                    "Enter a valid number "
+                    "from 1 to 30."
                 )
 
             except Exception as exc:
@@ -633,6 +561,7 @@ def ai_menu(username):
                 continue
 
             options = {
+
                 "A": input(
                     "Option A: "
                 ).strip(),
@@ -658,11 +587,8 @@ def ai_menu(username):
                 )
 
                 print(
-                    "\n=== AI HINT ==="
-                )
-
-                print(
-                    hint
+                    "\nHint:",
+                    hint,
                 )
 
             except Exception as exc:
@@ -743,13 +669,11 @@ def student_dashboard(user):
                 user["username"]
             )
 
-
         elif choice == "2":
 
             run_api_quiz(
                 user["username"]
             )
-
 
         elif choice == "3":
 
@@ -757,25 +681,21 @@ def student_dashboard(user):
                 user["username"]
             )
 
-
         elif choice == "4":
 
             review_wrong_answers(
                 user["username"]
             )
 
-
         elif choice == "5":
 
             show_leaderboard()
-
 
         elif choice == "6":
 
             ai_menu(
                 user["username"]
             )
-
 
         elif choice == "7":
 
@@ -784,7 +704,6 @@ def student_dashboard(user):
             )
 
             break
-
 
         else:
 
@@ -838,7 +757,6 @@ def main():
 
             register_user()
 
-
         elif choice == "2":
 
             user = login_user()
@@ -849,7 +767,6 @@ def main():
                     user
                 )
 
-
         elif choice == "3":
 
             admin = admin_login()
@@ -858,7 +775,6 @@ def main():
 
                 admin_dashboard()
 
-
         elif choice == "4":
 
             print(
@@ -866,7 +782,6 @@ def main():
             )
 
             break
-
 
         else:
 
@@ -877,25 +792,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-These two files now match
-
-Your "ai_assistant.py" has exactly these functions:
-
-analyze_performance()
-explain_answer()
-generate_practice_questions()
-generate_study_plan()
-give_hint()
-
-And this "main.py" imports and uses exactly those five functions.
-
-So on your "feature/ai-integration" branch:
-
-1. Replace "ai_assistant.py" with the code you supplied.
-2. Replace "main.py" with the code above.
-3. Commit both changes.
-4. Do not merge yet.
-5. Then we'll check the branch before creating the AI Pull Request.
-
-Also, leave "scoring.py" and "results.py" alone on this branch; this "main.py" simply uses their existing functions.
