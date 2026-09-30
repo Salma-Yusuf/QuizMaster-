@@ -1,4 +1,8 @@
-from auth import register_user, login_user, admin_login
+from auth import (
+    register_user,
+    login_user,
+    admin_login,
+)
 
 from quiz_engine import start_quiz
 
@@ -62,7 +66,9 @@ def run_local_quiz(username):
 
     try:
         amount = int(
-            input("Number of questions: ")
+            input(
+                "Number of questions: "
+            )
         )
 
         if not 1 <= amount <= 50:
@@ -74,30 +80,23 @@ def run_local_quiz(username):
         )
         return
 
-    try:
-        result = start_quiz(
-            username,
-            category,
-            difficulty,
-            amount,
-            source="local",
-        )
+    result = start_quiz(
+        username,
+        category,
+        difficulty,
+        amount,
+        source="local",
+    )
 
-        if result:
-            result["performance"] = (
-                performance_classification(
-                    result["percentage"]
-                )
+    if result:
+
+        result["performance"] = (
+            performance_classification(
+                result["percentage"]
             )
-
-            save_quiz_result(result)
-
-    except Exception as exc:
-
-        print(
-            "Local quiz error:",
-            exc,
         )
+
+        save_quiz_result(result)
 
 
 # ==========================================
@@ -106,9 +105,7 @@ def run_local_quiz(username):
 
 def run_api_quiz(username):
 
-    print(
-        "\n=== ONLINE API QUIZ ==="
-    )
+    print("\n=== ONLINE API QUIZ ===")
 
     try:
 
@@ -153,10 +150,12 @@ def run_api_quiz(username):
             1,
         ):
 
-            selected = quiz_engine._ask_question(
-                question,
-                number,
-                len(questions),
+            selected = (
+                quiz_engine._ask_question(
+                    question,
+                    number,
+                    len(questions),
+                )
             )
 
             answers.append(
@@ -268,16 +267,11 @@ def ai_menu(username):
         )
 
         print(
-            "Install dependencies with:"
+            "Install the required packages:"
         )
 
         print(
             "pip install google-genai python-dotenv"
-        )
-
-        print(
-            "Also make sure GEMINI_API_KEY "
-            "is configured."
         )
 
         return
@@ -285,7 +279,15 @@ def ai_menu(username):
     while True:
 
         print(
-            "\n=== GEMINI AI ASSISTANT ==="
+            "\n================================"
+        )
+
+        print(
+            "       GEMINI AI ASSISTANT"
+        )
+
+        print(
+            "================================"
         )
 
         print(
@@ -330,7 +332,10 @@ def ai_menu(username):
             if not result:
 
                 print(
-                    "No results available. "
+                    "No results available."
+                )
+
+                print(
                     "Take a quiz first."
                 )
 
@@ -345,7 +350,11 @@ def ai_menu(username):
                 )
 
                 print(
-                    "\n" + analysis
+                    "\n=== AI PERFORMANCE ANALYSIS ==="
+                )
+
+                print(
+                    analysis
                 )
 
             except Exception as exc:
@@ -369,7 +378,10 @@ def ai_menu(username):
             if not result:
 
                 print(
-                    "No results available. "
+                    "No results available."
+                )
+
+                print(
                     "Take a quiz first."
                 )
 
@@ -378,6 +390,7 @@ def ai_menu(username):
             wrong = [
 
                 answer
+
                 for answer
                 in result.get(
                     "answers",
@@ -400,15 +413,14 @@ def ai_menu(username):
 
                 continue
 
+            print(
+                "\n=== AI ANSWER EXPLANATIONS ==="
+            )
+
             for number, item in enumerate(
                 wrong,
                 1,
             ):
-
-                print(
-                    f"\n--- Wrong Answer "
-                    f"{number} ---"
-                )
 
                 try:
 
@@ -419,6 +431,10 @@ def ai_menu(username):
                             item["correct"],
                             item["options"],
                         )
+                    )
+
+                    print(
+                        f"\n--- Wrong Answer {number} ---"
                     )
 
                     print(
@@ -445,12 +461,17 @@ def ai_menu(username):
                 "Topic: "
             ).strip()
 
-            difficulty = (
-                input(
-                    "Difficulty Easy/Medium/Hard: "
-                ).strip()
-                or "Medium"
-            )
+            if not topic:
+
+                print(
+                    "Topic cannot be empty."
+                )
+
+                continue
+
+            difficulty = input(
+                "Difficulty Easy/Medium/Hard: "
+            ).strip() or "Medium"
 
             try:
 
@@ -460,6 +481,9 @@ def ai_menu(username):
                         "(1-10): "
                     )
                 )
+
+                if not 1 <= amount <= 10:
+                    raise ValueError
 
                 questions = (
                     generate_practice_questions(
@@ -476,7 +500,14 @@ def ai_menu(username):
                 print(
                     f"Added {added} "
                     "AI-generated questions "
-                    "to the local bank."
+                    "to the local question bank."
+                )
+
+            except ValueError:
+
+                print(
+                    "Enter a valid number "
+                    "from 1 to 10."
                 )
 
             except Exception as exc:
@@ -498,6 +529,10 @@ def ai_menu(username):
             )
 
             if not result:
+
+                print(
+                    "No results available."
+                )
 
                 print(
                     "Take a quiz first so AI "
@@ -524,7 +559,11 @@ def ai_menu(username):
                 )
 
                 print(
-                    "\n" + plan
+                    "\n=== AI STUDY PLAN ==="
+                )
+
+                print(
+                    plan
                 )
 
             except ValueError:
@@ -587,8 +626,11 @@ def ai_menu(username):
                 )
 
                 print(
-                    "\nHint:",
-                    hint,
+                    "\n=== AI HINT ==="
+                )
+
+                print(
+                    hint
                 )
 
             except Exception as exc:
@@ -607,6 +649,7 @@ def ai_menu(username):
 
             break
 
+
         else:
 
             print(
@@ -623,7 +666,15 @@ def student_dashboard(user):
     while True:
 
         print(
-            "\n=== STUDENT DASHBOARD ==="
+            "\n================================"
+        )
+
+        print(
+            "        STUDENT DASHBOARD"
+        )
+
+        print(
+            "================================"
         )
 
         print(
@@ -669,11 +720,13 @@ def student_dashboard(user):
                 user["username"]
             )
 
+
         elif choice == "2":
 
             run_api_quiz(
                 user["username"]
             )
+
 
         elif choice == "3":
 
@@ -681,21 +734,25 @@ def student_dashboard(user):
                 user["username"]
             )
 
+
         elif choice == "4":
 
             review_wrong_answers(
                 user["username"]
             )
 
+
         elif choice == "5":
 
             show_leaderboard()
+
 
         elif choice == "6":
 
             ai_menu(
                 user["username"]
             )
+
 
         elif choice == "7":
 
@@ -704,6 +761,7 @@ def student_dashboard(user):
             )
 
             break
+
 
         else:
 
@@ -757,6 +815,7 @@ def main():
 
             register_user()
 
+
         elif choice == "2":
 
             user = login_user()
@@ -767,6 +826,7 @@ def main():
                     user
                 )
 
+
         elif choice == "3":
 
             admin = admin_login()
@@ -775,6 +835,7 @@ def main():
 
                 admin_dashboard()
 
+
         elif choice == "4":
 
             print(
@@ -782,6 +843,7 @@ def main():
             )
 
             break
+
 
         else:
 
