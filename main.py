@@ -13,6 +13,9 @@ from results import (
     load_results,
 )
 
+from auth import register_user, login_user, admin_login
+from quiz_engine import start_quiz
+from results import save_quiz_result, view_student_results, review_wrong_answers
 from leaderboard import show_leaderboard
 from admin import admin_dashboard
 from question_bank import import_questions
