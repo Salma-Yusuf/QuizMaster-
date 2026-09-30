@@ -1,218 +1,348 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[codz]
-*$py.class
 
-# C extensions
-*.so
+from results import load_results
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+def get_performance_label(percentage):
 
-# PyInstaller
-#   Usually these files are written by a python script from a template
-#   before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+    """Return performance category based on percentage."""
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+    if percentage >= 80:
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py.cover
-.hypothesis/
-.pytest_cache/
-cover/
+        return "Excellent"
 
-# Translations
-*.mo
-*.pot
+    elif percentage >= 60:
 
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
+        return "Good"
 
-# Flask stuff:
-instance/
-.webassets-cache
+    elif percentage >= 40:
 
-# Scrapy stuff:
-.scrapy
+        return "Fair"
 
-# Sphinx documentation
-docs/_build/
+    else:
 
-# PyBuilder
-.pybuilder/
-target/
+        return "Needs Improvement"
 
-# Jupyter Notebook
-.ipynb_checkpoints
+def get_leaderboard():
 
-# IPython
-profile_default/
-ipython_config.py
+    """Return ranked leaderboard."""
 
-# pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
+    results = load_results()
 
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-# Pipfile.lock
+    ranked_results = sorted(
 
-# UV
-#   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-# uv.lock
+        results,
 
-# poetry
-#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-# poetry.lock
-# poetry.toml
+        key=lambda x: (
 
-# pdm
-#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
-#   pdm recommends including project-wide configuration in pdm.toml, but excluding .pdm-python.
-#   https://pdm-project.org/en/latest/usage/project/#working-with-version-control
-# pdm.lock
-# pdm.toml
-.pdm-python
-.pdm-build/
+            x.get("percentage", 0),
 
-# pixi
-#   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
-# pixi.lock
-#   Pixi creates a virtual environment in the .pixi directory, just like venv module creates one
-#   in the .venv directory. It is recommended not to include this directory in version control.
-.pixi
+            x.get("score", 0)
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
-__pypackages__/
+        ),
 
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
+        reverse=True
 
-# Redis
-*.rdb
-*.aof
-*.pid
+    )
 
-# RabbitMQ
-mnesia/
-rabbitmq/
-rabbitmq-data/
+    leaderboard = []
 
-# ActiveMQ
-activemq-data/
+    for rank, result in enumerate(ranked_results, start=1):
 
-# SageMath parsed files
-*.sage.py
+        percentage = result.get("percentage", 0)
 
-# Environments
-.env
-.envrc
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+        leaderboard.append({
 
-# Spyder project settings
-.spyderproject
-.spyproject
+            "rank": rank,
 
-# Rope project settings
-.ropeproject
+            "username": result.get("username", "Unknown"),
 
-# mkdocs documentation
-/site
+            "score": result.get("score", 0),
 
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
+            "total": result.get("total", 0),
 
-# Pyre type checker
-.pyre/
+            "percentage": percentage,
 
-# pytype static type analyzer
-.pytype/
+            "performance": get_performance_label(percentage)
 
-# Cython debug symbols
-cython_debug/
+        })
 
-# PyCharm
-#   JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#   be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#   and can be added to the global gitignore or merged into this file.  For a more nuclear
-#   option (not recommended) you can uncomment the following to ignore the entire idea folder.
-# .idea/
+    return leaderboard
 
-# Abstra
-#   Abstra is an AI-powered process automation framework.
-#   Ignore directories containing user credentials, local state, and settings.
-#   Learn more at https://abstra.io/docs
-.abstra/
+def show_leaderboard(limit=None):
 
-# Visual Studio Code
-#   Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
-#   that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
-#   and can be added to the global gitignore or merged into this file. However, if you prefer, 
-#   you could uncomment the following to ignore the entire vscode folder
-# .vscode/
-# Temporary file for partial code execution
-tempCodeRunnerFile.py
+    """Display leaderboard."""
 
-# Ruff stuff:
-.ruff_cache/
+    leaderboard = get_leaderboard()
 
-# PyPI configuration file
-.pypirc
+    if limit:
 
-# Marimo
-marimo/_static/
-marimo/_lsp/
-__marimo__/
+        leaderboard = leaderboard[:limit]
 
-# Streamlit
-.streamlit/secrets.toml
+    print("\n===== QUIZMASTER LEADERBOARD =====")
+
+    if not leaderboard:
+
+        print("No quiz results found.")
+
+        return
+
+    print(
+
+        f"{'Rank':<6}"
+
+        f"{'Student':<20}"
+
+        f"{'Score':<12}"
+
+        f"{'Percent':<12}"
+
+        f"{'Performance'}"
+
+    )
+
+    print("-" * 70)
+
+    for student in leaderboard:
+
+        score_text = (
+
+            f"{student['score']}/{student['total']}"
+
+        )
+
+        percentage_text = (
+
+            f"{student['percentage']:.2f}%"
+
+        )
+
+        print(
+
+            f"{student['rank']:<6}"
+
+            f"{student['username']:<20}"
+
+            f"{score_text:<12}"
+
+            f"{percentage_text:<12}"
+
+            f"{student['performance']}"
+
+        )
+
+def get_student_statistics(username):
+
+    """Get statistics for one student."""
+
+    results = [
+
+        r for r in load_results()
+
+        if r.get("username") == username
+
+    ]
+
+    if not results:
+
+        return None
+
+    percentages = [
+
+        r.get("percentage", 0)
+
+        for r in results
+
+    ]
+
+    scores = [
+
+        r.get("score", 0)
+
+        for r in results
+
+    ]
+
+    total_questions = sum(
+
+        r.get("total", 0)
+
+        for r in results
+
+    )
+
+    return {
+
+        "username": username,
+
+        "quizzes_taken": len(results),
+
+        "average_percentage": (
+
+            sum(percentages) / len(percentages)
+
+        ),
+
+        "highest_percentage": max(percentages),
+
+        "lowest_percentage": min(percentages),
+
+        "average_score": (
+
+            sum(scores) / len(scores)
+
+        ),
+
+        "questions_answered": total_questions,
+
+        "performance": get_performance_label(
+
+            sum(percentages) / len(percentages)
+
+        )
+
+    }
+
+def show_student_statistics(username):
+
+    """Display student statistics."""
+
+    stats = get_student_statistics(username)
+
+    if not stats:
+
+        print("\nNo records found.")
+
+        return
+
+    print("\n===== STUDENT STATISTICS =====")
+
+    print(f"Student: {stats['username']}")
+
+    print(f"Quizzes Taken: {stats['quizzes_taken']}")
+
+    print(f"Average Score: {stats['average_score']:.2f}")
+
+    print(
+
+        f"Average Percentage: "
+
+        f"{stats['average_percentage']:.2f}%"
+
+    )
+
+    print(
+
+        f"Highest Percentage: "
+
+        f"{stats['highest_percentage']:.2f}%"
+
+    )
+
+    print(
+
+        f"Lowest Percentage: "
+
+        f"{stats['lowest_percentage']:.2f}%"
+
+    )
+
+    print(
+
+        f"Questions Answered: "
+
+        f"{stats['questions_answered']}"
+
+    )
+
+    print(
+
+        f"Performance: "
+
+        f"{stats['performance']}"
+
+    )
+
+def get_overall_statistics():
+
+    """Get overall quiz statistics."""
+
+    results = load_results()
+
+    if not results:
+
+        return None
+
+    percentages = [
+
+        r.get("percentage", 0)
+
+        for r in results
+
+    ]
+
+    students = {
+
+        r.get("username")
+
+        for r in results
+
+    }
+
+    return {
+
+        "total_students": len(students),
+
+        "total_quizzes": len(results),
+
+        "average_percentage": (
+
+            sum(percentages) / len(percentages)
+
+        ),
+
+        "highest_percentage": max(percentages),
+
+        "lowest_percentage": min(percentages)
+
+    }
+
+def show_overall_statistics():
+
+    """Display overall statistics."""
+
+    stats = get_overall_statistics()
+
+    if not stats:
+
+        print("\nNo quiz records found.")
+
+        return
+
+    print("\n===== OVERALL STATISTICS =====")
+
+    print(f"Total Students: {stats['total_students']}")
+
+    print(f"Total Quizzes: {stats['total_quizzes']}")
+
+    print(
+
+        f"Average Percentage: "
+
+        f"{stats['average_percentage']:.2f}%"
+
+    )
+
+    print(
+
+        f"Highest Percentage: "
+
+        f"{stats['highest_percentage']:.2f}%"
+
+    )
+
+    print(
+
+        f"Lowest Percentage: "
+
+        f"{stats['lowest_percentage']:.2f}%"
+
+    )
