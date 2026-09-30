@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Practice quizzes{% endblock %}
+{% block content %}
+<section class="hero">
+  <div>
+    <h1>Practice until the answers <span class="hl">stick</span>.</h1>
+    <p class="lede">Pick a category and difficulty, answer at your own pace, and see exactly what you got right. Ask the AI assistant to explain anything you missed.</p>
+    <div class="row">
+      {% if current_user %}
+        <a class="btn marker" href="{{ url_for('admin_dashboard' if is_admin else 'dashboard') }}">Go to dashboard</a>
+      {% else %}
+        <a class="btn marker" href="{{ url_for('register') }}">Create a free account</a>
+        <a class="btn secondary" href="{{ url_for('login') }}">Log in</a>
+      {% endif %}
+    </div>
+    <div class="stats">
+      <div><strong>{{ question_count }}</strong><span class="muted">questions</span></div>
+      <div><strong>{{ category_count }}</strong><span class="muted">categories</span></div>
+      <div><strong>3</strong><span class="muted">difficulty levels</span></div>
+    </div>
+  </div>
+
+  <div class="sheet" aria-hidden="true">
+    <div class="q">Which keyword defines a function in Python?</div>
+    <ul class="options">
+      <li class="opt"><div class="static"><span class="bubble">A</span>func</div></li>
+      <li class="opt"><div class="static" style="background:var(--marker-soft);border-color:var(--ink)"><span class="bubble" style="background:var(--ink);color:var(--paper)">B</span>def</div></li>
+      <li class="opt"><div class="static"><span class="bubble">C</span>lambda</div></li>
+      <li class="opt"><div class="static"><span class="bubble">D</span>function</div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="grid" style="margin-top:2rem">
+  <div class="card"><h3>Two ways to practise</h3><p class="muted">Use the local question bank, or take an online quiz for fresh questions.</p></div>
+  <div class="card"><h3>Clear results</h3><p class="muted">See your score, percentage and performance level, then review every answer.</p></div>
+  <div class="card"><h3>Explained by AI</h3><p class="muted">Ask Gemini why an answer is right and what to study next.</p></div>
+</section>
+{% endblock %}

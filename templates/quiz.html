@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Quiz{% endblock %}
+{% block content %}
+<form id="quiz-form" method="post" action="{{ url_for('submit_quiz') }}">
+  <div class="quiz-top">
+    <div class="row between">
+      <strong id="counter" aria-live="polite">Question 1 of {{ questions|length }}</strong>
+      <span class="timer" id="timer" aria-label="Time elapsed">0:00</span>
+    </div>
+    <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+  </div>
+
+  <div class="quiz-layout">
+    <div class="card">
+      {% for q in questions %}
+      <section class="question{% if loop.first %} active{% endif %}" data-index="{{ loop.index0 }}" aria-labelledby="qt{{ q.id }}">
+        <div class="row" style="margin-bottom:.75rem">
+          <span class="chip">{{ q.category }}</span><span class="chip {{ q.difficulty }}">{{ q.difficulty }}</span>
+        </div>
+        <fieldset style="border:0;padding:0;margin:0">
+          <legend><h2 id="qt{{ q.id }}">{{ q.text }}</h2></legend>
+          <ul class="options">
+            {% for opt in q.options %}
+            <li class="opt">
+              <input type="radio" id="q{{ q.id }}o{{ loop.index0 }}" name="q{{ q.id }}" value="{{ loop.index0 }}">
+              <label for="q{{ q.id }}o{{ loop.index0 }}"><span class="bubble">{{ 'ABCD'[loop.index0] }}</span>{{ opt }}</label>
+            </li>
+            {% endfor %}
+          </ul>
+        </fieldset>
+      </section>
+      {% endfor %}
+
+      <div class="quiz-nav">
+        <button type="button" class="btn secondary" id="prev">Previous</button>
+        <button type="button" class="btn" id="next">Next</button>
+        <button type="submit" class="btn marker" id="finish">Finish quiz</button>
+      </div>
+    </div>
+
+    <aside class="card palette" aria-label="Question navigator">
+      <h3>Questions</h3>
+      <div class="palette-grid" id="palette">
+        {% for q in questions %}<button type="button" data-go="{{ loop.index0 }}" aria-label="Go to question {{ loop.index }}">{{ loop.index }}</button>{% endfor %}
+      </div>
+      <p class="hint" style="margin-top:.75rem"><span id="answered">0</span> of {{ questions|length }} answered. Filled circles are answered.</p>
+    </aside>
+  </div>
+</form>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/quiz.js') }}"></script>{% endblock %}
