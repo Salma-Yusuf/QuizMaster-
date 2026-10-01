@@ -1,5 +1,6 @@
 import html
 import json
+import random
 import urllib.parse
 import urllib.request
 
@@ -15,6 +16,7 @@ def fetch_questions(amount=5, category_id=None, difficulty=None):
 
     if category_id:
         params["category"] = int(category_id)
+
     if difficulty:
         params["difficulty"] = difficulty.lower()
 
@@ -22,37 +24,41 @@ def fetch_questions(amount=5, category_id=None, difficulty=None):
 
     try:
         with urllib.request.urlopen(url, timeout=12) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-    except Exception as exc:
-        raise RuntimeError(f"API request failed: {exc}")
+            data = json.loads(response.read().decode("utf-8"))
+    except Exception as e:
+        raise RuntimeError(f"API request failed: {e}")
 
-    if payload.get("response_code") != 0:
-        raise RuntimeError(
-            f"Open Trivia DB returned response code {payload.get('response_code')}"
+    if data.get("response_code") != 0:
+        raise RuntimeError("No questions available.")
+
+    questions = []
+
+    for item in data["results"]:
+        correct = html.unescape(
+            urllib.parse.unquote(item["correct_answer"])
         )
 
-    converted = []
-    for item in payload.get("results", []):
-        correct = html.unescape(urllib.parse.unquote(item["correct_answer"]))
-        incorrect = [
-            html.unescape(urllib.parse.unquote(value))
-            for value in item["incorrect_answers"]
+        options = [
+            html.unescape(urllib.parse.unquote(x))
+            for x in item["incorrect_answers"]
         ]
 
-        options = incorrect + [correct]
-        # Avoid importing random globally just for this small shuffle.
-        import random
+        options.append(correct)
         random.shuffle(options)
 
-        option_map = dict(zip(["A", "B", "C", "D"], options))
-        answer_letter = next(k for k, v in option_map.items() if v == correct)
+        answers = dict(zip("ABCD", options))
 
-        converted.append({
-            "question": html.unescape(urllib.parse.unquote(item["question"])),
-            "options": option_map,
-            "answer": answer_letter,
-            "category": html.unescape(urllib.parse.unquote(item["category"])),
+        questions.append({
+            "question": html.unescape(
+                urllib.parse.unquote(item["question"])
+            ),
+            "options": answers,
+            "answer": next(
+                letter for letter, value in answers.items()
+                if value == correct
+            ),
+            "category": item["category"],
             "difficulty": item["difficulty"].capitalize()
         })
 
-    return converted
+    return questions
