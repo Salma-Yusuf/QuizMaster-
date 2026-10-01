@@ -1,4 +1,4 @@
-""" 
+"""
 QuizMaster Advanced - Results Management
 
 Handles:
