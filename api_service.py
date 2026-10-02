@@ -2,7 +2,7 @@ import html
 import json
 import random
 import urllib.parse
-import urllib.request
+import urllib.request 
 
 BASE_URL = "https://opentdb.com/api.php"
 
