@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1 style="font-size:2rem">Hi, {{ current_name.split()[0] }}.</h1>
+<p class="muted">
+  {% if attempts %}You've taken {{ attempts }} quiz{{ 'zes' if attempts != 1 else '' }} · best score {{ best }}%.
+  {% else %}Take your first quiz to start building your results.{% endif %}
+</p>
+
+<div class="grid" style="margin-top:1.5rem">
+  <a class="card link" href="{{ url_for('quiz_setup', mode='local') }}"><h3>Local quiz</h3><p>Questions from the QuizMaster bank.</p></a>
+  <a class="card link" href="{{ url_for('quiz_setup', mode='online') }}"><h3>Online quiz</h3><p>Fresh questions from an online source.</p></a>
+  <a class="card link" href="{{ url_for('results') }}"><h3>Results</h3><p>Your past scores and reviews.</p></a>
+  <a class="card link" href="{{ url_for('leaderboard') }}"><h3>Leaderboard</h3><p>See how you rank.</p></a>
+  <a class="card link" href="{{ url_for('ai_assistant') }}"><h3>AI Assistant</h3><p>Ask Gemini for study help.</p></a>
+  <a class="card link" href="{{ url_for('logout') }}"><h3>Log out</h3><p>End your session.</p></a>
+</div>
+
+{% if last %}
+<p style="margin-top:2rem">Last quiz: <a href="{{ url_for('result', result_id=last.id) }}">{{ last.score }}/{{ last.total }} in {{ last.category_label }} ({{ last.level }})</a></p>
+{% endif %}
+{% endblock %}

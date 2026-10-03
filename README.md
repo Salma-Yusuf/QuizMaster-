@@ -331,9 +331,7 @@ The test requests three easy questions from Open Trivia DB.
 A successful test begins similar to:
 
 ```text
-=============================================
 QUIZMASTER V2 - API INTEGRATION TEST
-=============================================
 
 API connection successful.
 Questions received: 3

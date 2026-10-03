@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}QuizMaster{% endblock %} · QuizMaster</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="{{ url_for('dashboard' if current_user and not is_admin else ('admin_dashboard' if is_admin else 'home')) }}">
+        <span class="brand-mark" aria-hidden="true"></span>QuizMaster
+      </a>
+      <nav class="nav" aria-label="Main">
+        {% set ep = request.endpoint %}
+        {% if current_user and not is_admin %}
+          <a href="{{ url_for('dashboard') }}" {% if ep == 'dashboard' %}aria-current="page"{% endif %}>Dashboard</a>
+          <a href="{{ url_for('results') }}" {% if ep in ('results','result') %}aria-current="page"{% endif %}>Results</a>
+          <a href="{{ url_for('leaderboard') }}" {% if ep == 'leaderboard' %}aria-current="page"{% endif %}>Leaderboard</a>
+          <a href="{{ url_for('ai_assistant') }}" {% if ep == 'ai_assistant' %}aria-current="page"{% endif %}>AI Assistant</a>
+          <a href="{{ url_for('logout') }}">Log out</a>
+        {% elif is_admin %}
+          <a href="{{ url_for('admin_dashboard') }}" {% if ep == 'admin_dashboard' %}aria-current="page"{% endif %}>Admin</a>
+          <a href="{{ url_for('logout') }}">Log out</a>
+        {% else %}
+          <a href="{{ url_for('home') }}" {% if ep == 'home' %}aria-current="page"{% endif %}>Home</a>
+          <a href="{{ url_for('login') }}" {% if ep == 'login' %}aria-current="page"{% endif %}>Log in</a>
+          <a href="{{ url_for('register') }}" {% if ep == 'register' %}aria-current="page"{% endif %}>Sign up</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul class="flashes" role="status">
+            {% for cat, msg in messages %}<li class="flash {{ cat }}">{{ msg }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <footer class="site-footer"><div class="wrap">QuizMaster · Practice, check your score, learn why.</div></footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

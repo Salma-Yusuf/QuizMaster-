@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Admin{% endblock %}
+{% block content %}
+<h1 style="font-size:2rem">Administrator dashboard</h1>
+<dl class="score-grid">
+  <div><dt>Questions</dt><dd>{{ questions|length }}</dd></div>
+  <div><dt>Students</dt><dd>{{ students }}</dd></div>
+  <div><dt>Quiz attempts</dt><dd>{{ attempts }}</dd></div>
+</dl>
+
+<details class="card" style="margin-top:2rem">
+  <summary>Add a question</summary>
+  <form method="post" action="{{ url_for('admin_add_question') }}" class="stack" style="margin-top:1rem">
+    <div class="field"><label for="text">Question</label><textarea id="text" name="text" rows="2" required></textarea></div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+      {% for i in range(4) %}
+      <div class="field"><label for="opt{{ i }}">Option {{ 'ABCD'[i] }}</label><input id="opt{{ i }}" name="opt{{ i }}" type="text" required></div>
+      {% endfor %}
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
+      <div class="field"><label for="answer">Correct option</label>
+        <select id="answer" name="answer"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select></div>
+      <div class="field"><label for="category">Category</label>
+        <input id="category" name="category" type="text" list="cats" required><datalist id="cats">{% for c in categories %}<option value="{{ c }}">{% endfor %}</datalist></div>
+      <div class="field"><label for="difficulty">Difficulty</label>
+        <select id="difficulty" name="difficulty"><option>Easy</option><option>Medium</option><option>Hard</option></select></div>
+    </div>
+    <button class="btn marker" type="submit">Add question</button>
+  </form>
+</details>
+
+<h2 style="margin-top:2.5rem">Question bank</h2>
+<div class="table-wrap"><table>
+  <thead><tr><th>Question</th><th>Category</th><th>Difficulty</th><th>Answer</th><th></th></tr></thead>
+  <tbody>
+  {% for q in questions %}
+    <tr>
+      <td>{{ q.text }}</td><td>{{ q.category }}</td><td><span class="chip {{ q.difficulty }}">{{ q.difficulty }}</span></td>
+      <td>{{ 'ABCD'[q.answer] }}. {{ q.options[q.answer] }}</td>
+      <td><form method="post" action="{{ url_for('admin_delete_question', qid=q.id) }}" onsubmit="return confirm('Delete this question?')">
+        <button class="btn danger small" type="submit">Delete</button></form></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table></div>
+
+<h2 style="margin-top:2.5rem">Leaderboard (top 10)</h2>
+{% if rows %}
+<div class="table-wrap"><table>
+  <thead><tr><th class="num">Rank</th><th>Student</th><th class="num">Score</th><th class="num">%</th></tr></thead>
+  <tbody>{% for r in rows %}<tr class="{{ 'rank-1' if r.rank == 1 }}"><td class="num">{{ r.rank }}</td><td>{{ r.name }}</td><td class="num">{{ r.score }}/{{ r.total }}</td><td class="num">{{ r.percentage }}%</td></tr>{% endfor %}</tbody>
+</table></div>
+{% else %}<p class="muted">No quiz attempts yet.</p>{% endif %}
+{% endblock %}

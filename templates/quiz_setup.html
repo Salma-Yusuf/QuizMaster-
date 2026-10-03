@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Set up {{ mode }} quiz{% endblock %}
+{% block content %}
+<div class="narrow">
+  <h1 style="font-size:2rem">{{ 'Local' if mode == 'local' else 'Online' }} quiz</h1>
+  <p class="muted">Choose what you want to practise.</p>
+  <form class="card" method="post">
+    <div class="field">
+      <label for="category">Category</label>
+      <select id="category" name="category">
+        <option value="all">All categories</option>
+        {% for c in categories %}<option value="{{ c }}">{{ c }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="field">
+      <span class="label" id="dlabel">Difficulty</span>
+      <div class="row" role="radiogroup" aria-labelledby="dlabel">
+        {% for d in ['all','Easy','Medium','Hard'] %}
+          <label style="font-weight:500;margin:0;display:flex;gap:.35rem;align-items:center">
+            <input type="radio" name="difficulty" value="{{ d }}" {% if loop.first %}checked{% endif %} style="width:auto;min-height:0">
+            {{ 'Any' if d == 'all' else d }}
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="field">
+      <label for="count">Number of questions</label>
+      <select id="count" name="count">
+        <option>5</option><option selected>10</option><option>15</option><option>20</option>
+      </select>
+      <div class="hint">If fewer questions match, you'll get all that do.</div>
+    </div>
+    <div class="field"><button class="btn marker" type="submit" style="width:100%">Start quiz</button></div>
+  </form>
+</div>
+{% endblock %}

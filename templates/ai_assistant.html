@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}AI Assistant{% endblock %}
+{% block content %}
+<h1 style="font-size:2rem">AI Assistant</h1>
+<p class="muted">Ask Gemini to explain a topic, a question you missed, or how to study for a quiz.</p>
+<div class="chat" id="chat" aria-live="polite">
+  <div class="msg bot">Hi! What would you like help with today?</div>
+</div>
+<form class="chat-form" id="chat-form">
+  <label class="sr-only" for="msg">Your question</label>
+  <input id="msg" type="text" placeholder="e.g. What is the difference between a list and a tuple?" autocomplete="off" required>
+  <button class="btn marker" type="submit">Send</button>
+</form>
+{% endblock %}
+{% block scripts %}
+<script>
+const chat = document.getElementById('chat'), input = document.getElementById('msg');
+const history = [];
+function add(text, who) {
+  const d = document.createElement('div'); d.className = 'msg ' + who; d.textContent = text;
+  chat.appendChild(d); chat.scrollTop = chat.scrollHeight; return d;
+}
+document.getElementById('chat-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const text = input.value.trim(); if (!text) return;
+  add(text, 'me'); input.value = '';
+  const wait = add('Thinking…', 'bot');
+  try {
+    const res = await fetch('{{ url_for("api_chat") }}', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({message: text, history: history})});
+    const reply = (await res.json()).reply;
+    wait.textContent = reply;
+    history.push({role: 'user', text: text}, {role: 'model', text: reply});
+  } catch (err) { wait.textContent = 'Could not reach the assistant. Try again.'; }
+  chat.scrollTop = chat.scrollHeight;
+});
+</script>
+{% endblock %}

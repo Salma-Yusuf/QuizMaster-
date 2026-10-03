@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Result{% endblock %}
+{% block content %}
+<h1 style="font-size:2rem">Your result</h1>
+<p class="muted">{{ r.category_label }} · {{ r.difficulty_label }} · {{ r.mode|capitalize }} quiz</p>
+<p><span class="level">{{ r.level }}</span></p>
+
+<dl class="score-grid">
+  <div><dt>Total questions</dt><dd>{{ r.total }}</dd></div>
+  <div><dt>Correct</dt><dd>{{ r.score }}</dd></div>
+  <div><dt>Incorrect</dt><dd>{{ r.wrong }}</dd></div>
+  <div><dt>Score</dt><dd>{{ r.score }}/{{ r.total }}</dd></div>
+  <div><dt>Percentage</dt><dd>{{ r.percentage }}%</dd></div>
+</dl>
+
+<div class="row" style="margin-top:1.5rem">
+  <button class="btn marker" id="explain-all" type="button" data-result="{{ r.id }}">Explain my results with AI</button>
+  <a class="btn secondary" href="{{ url_for('quiz_setup', mode=r.mode) }}">Take another quiz</a>
+  <a class="btn secondary" href="{{ url_for('dashboard') }}">Dashboard</a>
+</div>
+<div class="ai-box" id="ai-all" hidden></div>
+
+<h2 style="margin-top:2.5rem">Review your answers</h2>
+{% for it in r.review %}
+<article class="review-item">
+  <h3>{{ loop.index }}. {{ it.text }}</h3>
+  <ul class="options">
+    {% for opt in it.options %}
+      {% set right = loop.index0 == it.answer %}
+      {% set mine = loop.index0 == it.chosen %}
+      <li class="opt {{ 'right' if right else ('wrong' if mine else '') }}">
+        <div class="static">
+          <span class="bubble">{{ 'ABCD'[loop.index0] }}</span>{{ opt }}
+          {% if right %}<span class="tag">Correct answer</span>{% elif mine %}<span class="tag">Your answer</span>{% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+  {% if it.chosen is none %}<p class="hint">You didn't answer this one.</p>{% endif %}
+  {% if it.explanation %}<p class="muted" style="margin-top:.75rem">{{ it.explanation }}</p>{% endif %}
+  <button class="btn secondary small explain-one" type="button" data-result="{{ r.id }}" data-q="{{ it.id }}">Explain with AI</button>
+  <div class="ai-box" hidden></div>
+</article>
+{% endfor %}
+{% endblock %}
+{% block scripts %}
+<script>
+async function explain(btn, box, qid) {
+  btn.disabled = true; const old = btn.textContent; btn.textContent = 'Thinking…';
+  try {
+    const res = await fetch('{{ url_for("api_explain") }}', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({result_id: +btn.dataset.result, question_id: qid || null})
+    });
+    const data = await res.json();
+    box.textContent = data.reply || 'No explanation came back. Try again.';
+  } catch (e) { box.textContent = 'Could not reach the AI assistant. Check your connection and try again.'; }
+  box.hidden = false; btn.disabled = false; btn.textContent = old;
+}
+document.getElementById('explain-all').addEventListener('click', e =>
+  explain(e.currentTarget, document.getElementById('ai-all'), null));
+document.querySelectorAll('.explain-one').forEach(b =>
+  b.addEventListener('click', () => explain(b, b.nextElementSibling, b.dataset.q)));
+</script>
+{% endblock %}
