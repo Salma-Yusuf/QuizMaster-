@@ -1,378 +1,53 @@
 [
-    {
-        "id": 1,
-        "question": "Which keyword is used to define a function in Python?",
-        "options": {"A": "func", "B": "def", "C": "function", "D": "define"},
-        "answer": "B",
-        "category": "Python",
-        "difficulty": "Easy"
-    },
-    {
-        "id": 2,
-        "question": "Which data structure stores key-value pairs in Python?",
-        "options": {"A": "List", "B": "Tuple", "C": "Dictionary", "D": "Set"},
-        "answer": "C",
-        "category": "Python",
-        "difficulty": "Easy"
-    },
-    {
-        "id": 3,
-        "question": "What does API stand for?",
-        "options": {"A": "Application Programming Interface", "B": "Applied Program Internet", "C": "Application Process Integration", "D": "Advanced Programming Input"},
-        "answer": "A",
-        "category": "Technology",
-        "difficulty": "Easy"
-    },
-    {
-    "id": 4,
-    "question": "Which symbol starts a single-line comment in Python?",
-    "options": {
-      "A": "/*",
-      "B": "//",
-      "C": "#",
-      "D": "--"
-    },
-    "answer": "C",
-    "category": "Python",
-    "difficulty": "Easy"
-  },
-    {
-    "id": 5,
-    "question": "Which of these Python data types is immutable?",
-    "options": {
-      "A": "List",
-      "B": "Dictionary",
-      "C": "Set",
-      "D": "Tuple"
-    },
-    "answer": "D",
-    "category": "Python",
-    "difficulty": "Medium"
-  },
   {
-    "id": 6,
-    "question": "What does len([1, 2, 3]) return?",
-    "options": {
-      "A": "2",
-      "B": "3",
-      "C": "An error",
-      "D": "4"
-    },
-    "answer": "B",
-    "category": "Python",
-    "difficulty": "Easy"
-  },
-  {
-    "id": 7,
-    "question": "Which built-in function reads text typed by the user in Python 3?",
-    "options": {
-      "A": "get()",
-      "B": "read()",
-      "C": "input()",
-      "D": "scanf()"
-    },
-    "answer": "C",
-    "category": "Python",
-    "difficulty": "Easy"
-  },
-  {
-    "id": 8,
-    "question": "Which numbers does range(3) produce?",
-    "options": {
-      "A": "0, 1, 2, 3",
-      "B": "0, 1, 2",
-      "C": "1, 2, 3",
-      "D": "3"
-    },
-    "answer": "B",
-    "category": "Python",
-    "difficulty": "Medium"
-  },
-  {
-    "id": 9,
-    "question": "Which keyword is used to handle an exception in Python?",
-    "options": {
-      "A": "rescue",
-      "B": "handle",
-      "C": "except",
-      "D": "catch"
-    },
-    "answer": "C",
-    "category": "Python",
-    "difficulty": "Medium"
-  },
-  {
-    "id": 10,
-    "question": "What does the append() method do to a list?",
-    "options": {
-      "A": "Adds an item to the start",
-      "B": "Sorts the list",
-      "C": "Removes the last item",
-      "D": "Adds an item to the end"
-    },
-    "answer": "D",
-    "category": "Python",
-    "difficulty": "Easy"
-  },
-  {
-    "id": 11,
-    "question": "What is the result of 7 // 2 in Python?",
-    "options": {
-      "A": "1",
-      "B": "3",
-      "C": "4",
-      "D": "3.5"
-    },
-    "answer": "B",
-    "category": "Python",
-    "difficulty": "Hard"
-  },
-  {
-    "id": 12,
-    "question": "What does 'abc'[::-1] return in Python?",
-    "options": {
-      "A": "'abc'",
-      "B": "'bca'",
-      "C": "'cba'",
-      "D": "An error"
-    },
-    "answer": "C",
-    "category": "Python",
-    "difficulty": "Hard"
-  },
-  {
-    "id": 13,
+    "id": 1,
     "question": "What does HTML stand for?",
-    "options": {
-      "A": "High Text Machine Language",
-      "B": "Home Text Markup Level",
-      "C": "HyperTool Multi Language",
-      "D": "HyperText Markup Language"
-    },
-    "answer": "D",
-    "category": "Technology",
-    "difficulty": "Easy"
-  },
-  {
-    "id": 14,
-    "question": "What does CPU stand for?",
-    "options": {
-      "A": "Core Processing Update",
-      "B": "Central Processing Unit",
-      "C": "Central Program Utility",
-      "D": "Computer Power Unit"
-    },
-    "answer": "B",
-    "category": "Technology",
-    "difficulty": "Easy"
-  },
-  {
-    "id": 15,
-    "question": "Which of these is an operating system?",
-    "options": {
-      "A": "Java",
-      "B": "Oracle",
-      "C": "HTTP",
-      "D": "Linux"
-    },
-    "answer": "D",
-    "category": "Technology",
-    "difficulty": "Easy"
-  },
-  {
-    "id": 16,
-    "question": "What does the HTTP status code 404 mean?",
-    "options": {
-      "A": "OK",
-      "B": "Unauthorized",
-      "C": "Not Found",
-      "D": "Server Error"
-    },
-    "answer": "C",
-    "category": "Technology",
-    "difficulty": "Medium"
-  },
-  {
-    "id": 17,
-    "question": "What does JSON stand for?",
-    "options": {
-      "A": "Java Source Object Network",
-      "B": "Joint Standard Object Naming",
-      "C": "JavaScript Object Notation",
-      "D": "JavaScript Ordered Nodes"
-    },
-    "answer": "C",
-    "category": "Technology",
-    "difficulty": "Easy"
-  },
-  {
-    "id": 18,
-    "question": "What is the main purpose of a firewall?",
-    "options": {
-      "A": "Speed up the internet",
-      "B": "Compile source code",
-      "C": "Store backup files",
-      "D": "Control network traffic for security"
-    },
-    "answer": "D",
-    "category": "Technology",
-    "difficulty": "Medium"
-  },
-  {
-    "id": 19,
-    "question": "Which protocol is used for secure web browsing?",
-    "options": {
-      "A": "HTTPS",
-      "B": "HTTP",
-      "C": "FTP",
-      "D": "SMTP"
-    },
-    "answer": "A",
-    "category": "Technology",
-    "difficulty": "Medium"
-  },
-  {
-    "id": 20,
-    "question": "Which company developed the Gemini AI model?",
-    "options": {
-      "A": "Google",
-      "B": "Microsoft",
-      "C": "OpenAI",
-      "D": "Meta"
-    },
-    "answer": "A",
-    "category": "Technology",
-    "difficulty": "Easy"
-  },
-  {
-    "id": 21,
-    "question": "Flask is a web framework for which language?",
-    "options": {
-      "A": "Ruby",
-      "B": "Python",
-      "C": "Java",
-      "D": "PHP"
-    },
-    "answer": "B",
+    "options": [
+      "Hyper Trainer Marking Language",
+      "HyperText Markup Language",
+      "HyperText Markdown Language",
+      "Hyper Tool Multi Language"
+    ],
+    "correct_answer": "HyperText Markup Language",
     "category": "Web Development",
-    "difficulty": "Easy"
+    "difficulty": "easy"
   },
   {
-    "id": 22,
-    "question": "Which decorator defines a URL route in Flask?",
-    "options": {
-      "A": "@flask.path",
-      "B": "@app.route",
-      "C": "@route.app",
-      "D": "@app.url"
-    },
-    "answer": "B",
-    "category": "Web Development",
-    "difficulty": "Easy"
+    "id": 2,
+    "question": "Which keyword is used to define a function in Python?",
+    "options": [
+      "func",
+      "def",
+      "function",
+      "lambda"
+    ],
+    "correct_answer": "def",
+    "category": "Python",
+    "difficulty": "easy"
   },
   {
-    "id": 23,
-    "question": "Which HTTP method is normally used to submit a form that creates new data?",
-    "options": {
-      "A": "TRACE",
-      "B": "GET",
-      "C": "HEAD",
-      "D": "POST"
-    },
-    "answer": "D",
-    "category": "Web Development",
-    "difficulty": "Medium"
+    "id": 3,
+    "question": "Which data type is immutable in Python?",
+    "options": [
+      "list",
+      "dict",
+      "tuple",
+      "set"
+    ],
+    "correct_answer": "tuple",
+    "category": "Python",
+    "difficulty": "medium"
   },
   {
-    "id": 24,
-    "question": "Which Flask function turns a Python dictionary into a JSON response?",
-    "options": {
-      "A": "jsonify",
-      "B": "dumps_response",
-      "C": "tojson_str",
-      "D": "make_json"
-    },
-    "answer": "A",
-    "category": "Web Development",
-    "difficulty": "Medium"
-  },
-  {
-    "id": 25,
-    "question": "Which template engine does Flask use by default?",
-    "options": {
-      "A": "Mustache",
-      "B": "Jinja2",
-      "C": "Django Templates",
-      "D": "Handlebars"
-    },
-    "answer": "B",
-    "category": "Web Development",
-    "difficulty": "Medium"
-  },
-  {
-    "id": 26,
-    "question": "Which HTTP status code means a resource was created successfully?",
-    "options": {
-      "A": "500",
-      "B": "200",
-      "C": "301",
-      "D": "201"
-    },
-    "answer": "D",
-    "category": "Web Development",
-    "difficulty": "Hard"
-  },
-  {
-    "id": 27,
-    "question": "What does SQL stand for?",
-    "options": {
-      "A": "Standard Query Logic",
-      "B": "Structured Query Language",
-      "C": "Sequential Query List",
-      "D": "Simple Question Language"
-    },
-    "answer": "B",
-    "category": "Databases",
-    "difficulty": "Easy"
-  },
-  {
-    "id": 28,
-    "question": "Which SQL command retrieves data from a table?",
-    "options": {
-      "A": "FETCH",
-      "B": "SELECT",
-      "C": "GET",
-      "D": "OPEN"
-    },
-    "answer": "B",
-    "category": "Databases",
-    "difficulty": "Easy"
-  },
-  {
-    "id": 29,
-    "question": "Which statement about a primary key is true?",
-    "options": {
-      "A": "It cannot identify a row",
-      "B": "It can contain duplicates",
-      "C": "It must always be text",
-      "D": "Its values must be unique"
-    },
-    "answer": "D",
-    "category": "Databases",
-    "difficulty": "Medium"
-  },
-  {
-    "id": 30,
-    "question": "Which of these is a NoSQL database?",
-    "options": {
-      "A": "MongoDB",
-      "B": "MySQL",
-      "C": "SQLite",
-      "D": "PostgreSQL"
-    },
-    "answer": "A",
-    "category": "Databases",
-    "difficulty": "Medium"
+    "id": 4,
+    "question": "What aspect of Cybersecurity collects data and helps you learn the techniques, procedures, and tactics of your potential adversaries to better prepare for them?",
+    "options": [
+      "Incident Response",
+      "Malware Analysis",
+      "Threat Intelligence"
+    ],
+    "correct_answer": "Threat Intelligence",
+    "category": "Cybersecurity",
+    "difficulty": "easy"
   }
-
 ]

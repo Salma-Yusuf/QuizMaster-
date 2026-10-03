@@ -1,0 +1,40 @@
+{% extends "admin/base.html" %}
+{% block title %}Add Question{% endblock %}
+
+{% block content %}
+<h1>Add New Question</h1>
+
+<form method="POST" action="{{ url_for('admin.add_question') }}" class="question-form">
+    <label for="question">Question</label>
+    <textarea id="question" name="question" required></textarea>
+
+    <label for="option1">Option 1</label>
+    <input type="text" id="option1" name="option1" required>
+
+    <label for="option2">Option 2</label>
+    <input type="text" id="option2" name="option2" required>
+
+    <label for="option3">Option 3 (optional)</label>
+    <input type="text" id="option3" name="option3">
+
+    <label for="option4">Option 4 (optional)</label>
+    <input type="text" id="option4" name="option4">
+
+    <label for="correct_answer">Correct Answer</label>
+    <input type="text" id="correct_answer" name="correct_answer" required
+           placeholder="Must match one of the options above exactly">
+
+    <label for="category">Category</label>
+    <input type="text" id="category" name="category" placeholder="e.g. Python" value="General">
+
+    <label for="difficulty">Difficulty</label>
+    <select id="difficulty" name="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+    </select>
+
+    <button type="submit" class="btn">Save Question</button>
+    <a href="{{ url_for('admin.manage_questions') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
