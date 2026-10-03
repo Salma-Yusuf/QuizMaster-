@@ -289,5 +289,4 @@ def generate_practice_questions(
         "- answer: A, B, C, or D\n"
         "- category: string\n"
         "- difficulty: Easy, Medium, or Hard\n\n"
-
-        "
+    )
