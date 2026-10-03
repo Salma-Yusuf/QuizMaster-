@@ -1,0 +1,53 @@
+[
+  {
+    "id": 1,
+    "question": "What does HTML stand for?",
+    "options": [
+      "Hyper Trainer Marking Language",
+      "HyperText Markup Language",
+      "HyperText Markdown Language",
+      "Hyper Tool Multi Language"
+    ],
+    "correct_answer": "HyperText Markup Language",
+    "category": "Web Development",
+    "difficulty": "easy"
+  },
+  {
+    "id": 2,
+    "question": "Which keyword is used to define a function in Python?",
+    "options": [
+      "func",
+      "def",
+      "function",
+      "lambda"
+    ],
+    "correct_answer": "def",
+    "category": "Python",
+    "difficulty": "easy"
+  },
+  {
+    "id": 3,
+    "question": "Which data type is immutable in Python?",
+    "options": [
+      "list",
+      "dict",
+      "tuple",
+      "set"
+    ],
+    "correct_answer": "tuple",
+    "category": "Python",
+    "difficulty": "medium"
+  },
+  {
+    "id": 4,
+    "question": "What aspect of Cybersecurity collects data and helps you learn the techniques, procedures, and tactics of your potential adversaries to better prepare for them?",
+    "options": [
+      "Incident Response",
+      "Malware Analysis",
+      "Threat Intelligence"
+    ],
+    "correct_answer": "Threat Intelligence",
+    "category": "Cybersecurity",
+    "difficulty": "easy"
+  }
+]

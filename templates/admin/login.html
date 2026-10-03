@@ -1,0 +1,19 @@
+{% extends "admin/base.html" %}
+{% block title %}Admin Login{% endblock %}
+
+{% block content %}
+<div class="login-box">
+    <h1>Administrator Login</h1>
+    <p class="muted">Restricted area — authorized staff only.</p>
+
+    <form method="POST" action="{{ url_for('admin.admin_login') }}">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autofocus>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Log In</button>
+    </form>
+</div>
+{% endblock %}

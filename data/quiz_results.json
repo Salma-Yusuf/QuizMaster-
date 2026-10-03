@@ -1,0 +1,26 @@
+[
+  {
+    "username": "temitope",
+    "score": 8,
+    "total_questions": 10,
+    "percentage": 80.0,
+    "category": "Python",
+    "date": "2026-09-28"
+  },
+  {
+    "username": "chidera",
+    "score": 6,
+    "total_questions": 10,
+    "percentage": 60.0,
+    "category": "Web Development",
+    "date": "2026-09-29"
+  },
+  {
+    "username": "temitope",
+    "score": 9,
+    "total_questions": 10,
+    "percentage": 90.0,
+    "category": "General Knowledge",
+    "date": "2026-09-30"
+  }
+]
