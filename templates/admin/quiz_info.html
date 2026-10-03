@@ -1,0 +1,34 @@
+{% extends "admin/base.html" %}
+{% block title %}Quiz Information{% endblock %}
+
+{% block content %}
+<h1>Quiz Information</h1>
+<p class="muted">All recorded quiz attempts, most recent first.</p>
+
+{% if results %}
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Category</th>
+            <th>Score</th>
+            <th>Percentage</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in results %}
+        <tr>
+            <td>{{ r.username }}</td>
+            <td>{{ r.category }}</td>
+            <td>{{ r.score }} / {{ r.total_questions }}</td>
+            <td>{{ r.percentage }}%</td>
+            <td>{{ r.date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="muted">No quiz attempts recorded yet.</p>
+{% endif %}
+{% endblock %}
