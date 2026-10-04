@@ -1,4 +1,3 @@
-"""JSON storage for users and quiz results (same approach as question_bank.py)."""
 import json
 import os
 import threading

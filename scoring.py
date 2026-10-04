@@ -1,4 +1,4 @@
- """
+"""
 QuizMaster Advanced - Scoring System
 
 Handles quiz scoring, performance classification,
