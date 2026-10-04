@@ -56,7 +56,7 @@ def normalize(q):
     else:
         normalized_options = []
 
-    answer = q.get("answer", "A")
+    answer = q.get("answer", q.get("correct_answer", "A"))
 
     if isinstance(answer, str) and answer in letters:
         answer_index = letters.index(answer)
