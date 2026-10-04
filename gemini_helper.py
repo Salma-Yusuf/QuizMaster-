@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 """Gemini connection for QuizMaster (uses Google's current `google-genai` SDK)."""
 import os
 import time
@@ -11,7 +13,7 @@ SYSTEM_PROMPT = (
 )
 
 # Tried in order. Put your preferred model first with GEMINI_MODEL (see Google AI Studio for current names).
-DEFAULT_MODELS = ["gemini-2.5-flash", "gemini-flash-latest"]
+DEFAULT_MODELS = ["gemini-3.5-flash", "gemini-2.5-flash", "gemini-flash-latest"]
 
 _calls = defaultdict(deque)
 RATE_LIMIT, RATE_WINDOW = 15, 60          # 15 AI requests per user per minute
