@@ -44,16 +44,36 @@ ONLINE_CATEGORIES = {"General Knowledge": 9, "Science & Nature": 17, "Computer S
 
 
 def normalize(q):
-    """Convert question_bank format -> the shape the templates use.
-    {'question','options':{'A':..},'answer':'B'}  ->  {'text','options':[..4],'answer':1}"""
+    """Convert QuizMaster questions to the format used by the Flask app."""
     letters = "ABCD"
-    return {"id": q.get("id"), "text": q["question"],
-            "options": [q["options"][k] for k in letters],
-            "answer": letters.index(q["answer"]),
-            "category": q.get("category", "General"),
-            "difficulty": q.get("difficulty", "Medium"),
-            "explanation": q.get("explanation", "")}
 
+    options = q.get("options", {})
+
+    if isinstance(options, dict):
+        normalized_options = [options[k] for k in letters]
+    elif isinstance(options, list):
+        normalized_options = options
+    else:
+        normalized_options = []
+
+    answer = q.get("answer", "A")
+
+    if isinstance(answer, str) and answer in letters:
+        answer_index = letters.index(answer)
+    elif isinstance(answer, int):
+        answer_index = answer
+    else:
+        answer_index = 0
+
+    return {
+        "id": q.get("id"),
+        "text": q["question"],
+        "options": normalized_options,
+        "answer": answer_index,
+        "category": q.get("category", "General"),
+        "difficulty": q.get("difficulty", "Medium"),
+        "explanation": q.get("explanation", "")
+    }
 
 def get_categories(mode="local"):
     return sorted(ONLINE_CATEGORIES) if mode == "online" else qb.get_categories()
