@@ -5,8 +5,6 @@ Users and results: data_store.py (data/users.json, data/results.json).
 """
 import json
 import os
-import urllib.parse
-import urllib.request
 import uuid
 from datetime import datetime
 from functools import wraps
@@ -19,6 +17,7 @@ import data_store as store
 import gemini_helper
 from gemini_helper import ask_gemini
 import question_bank as qb
+from api_service import APIServiceError, fetch_questions as fetch_api_questions
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "change-me-in-production")
