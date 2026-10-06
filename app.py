@@ -142,14 +142,6 @@ def admin_required(view):
         return view(*a, **kw)
     return wrapper
 
-
-def performance_level(pct):
-    if pct >= 90: return "Excellent"
-    if pct >= 75: return "Very good"
-    if pct >= 50: return "Satisfactory"
-    return "Needs practice"
-
-
 def leaderboard_rows():
     best = {}
     users = store.get_users()
