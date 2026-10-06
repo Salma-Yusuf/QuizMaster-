@@ -18,6 +18,7 @@ import gemini_helper
 from gemini_helper import ask_gemini
 import question_bank as qb
 from api_service import APIServiceError, fetch_questions as fetch_api_questions
+from scoring import calculate_score, performance_classification
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "change-me-in-production")
@@ -281,25 +282,71 @@ def submit_quiz():
     questions = ACTIVE_QUIZZES.pop(state["token"], None) if state else None
     if not questions:
         return redirect(url_for("dashboard"))
-    review, score = [], 0
-    for q in questions:
-        raw = request.form.get(f"q{q['id']}")
-        chosen = int(raw) if raw is not None and raw.isdigit() and int(raw) < 4 else None
-        correct = chosen == q["answer"]
-        score += correct
-        review.append({"id": q["id"], "text": q["text"], "options": q["options"], "chosen": chosen,
-                       "answer": q["answer"], "correct": correct, "explanation": q["explanation"]})
-    total = len(review)
-    pct = round(score / total * 100) if total else 0
-    cat = state["category"]
-    result = {"user": session["user"], "mode": state["mode"],
-              "category_label": "All categories" if cat == "all" else cat,
-              "difficulty_label": "Any difficulty" if state["difficulty"] == "all" else state["difficulty"],
-              "score": score, "total": total, "wrong": total - score, "percentage": pct,
-              "level": performance_level(pct), "review": review,
-              "taken_at": datetime.now()}
-    result = store.add_result(result)
-    return redirect(url_for("result", result_id=result["id"]))
+    review = []
+scoring_answers = []
+
+for q in questions:
+    raw = request.form.get(f"q{q['id']}")
+
+    if (
+        raw is not None
+        and raw.isdigit()
+        and 0 <= int(raw) < 4
+    ):
+        chosen = int(raw)
+    else:
+        chosen = None
+
+    correct = chosen == q["answer"]
+
+    letters = "ABCD"
+
+    selected_letter = (
+        letters[chosen]
+        if chosen is not None
+        else None
+    )
+
+    correct_letter = letters[q["answer"]]
+
+    scoring_answers.append({
+        "question": q["text"],
+        "selected": selected_letter,
+        "correct": correct_letter,
+    })
+
+    review.append({
+        "id": q["id"],
+        "text": q["text"],
+        "options": q["options"],
+        "chosen": chosen,
+        "answer": q["answer"],
+        "correct": correct,
+        "explanation": q["explanation"],
+    })
+
+score, pct = calculate_score(scoring_answers)
+performance = performance_classification(pct)
+
+total = len(review)
+cat = state["category"]
+
+result = {
+    "user": session["user"],
+    "mode": state["mode"],
+    "category_label": "All categories" if cat == "all" else cat,
+    "difficulty_label": "Any difficulty" if state["difficulty"] == "all" else state["difficulty"],
+    "score": score,
+    "total": total,
+    "wrong": total - score,
+    "percentage": pct,
+    "level": performance,
+    "review": review,
+    "taken_at": datetime.now()
+}
+
+result = store.add_result(result)
+return redirect(url_for("result", result_id=result["id"]))
 
 
 def _own_result(result_id):
