@@ -79,23 +79,35 @@ def get_categories(mode="local"):
 
 
 def fetch_online_questions(category, difficulty, count):
-    """Pull questions from Open Trivia DB and convert them with your converter."""
-    params = {"amount": count, "type": "multiple"}
-    if category != "all" and category in ONLINE_CATEGORIES:
-        params["category"] = ONLINE_CATEGORIES[category]
-    if difficulty != "all":
-        params["difficulty"] = difficulty.lower()
-    url = "https://opentdb.com/api.php?" + urllib.parse.urlencode(params)
-    with urllib.request.urlopen(url, timeout=8) as resp:
-        data = json.load(resp)
-    if data.get("response_code") != 0:
-        return []
-    out = []
-    for i, item in enumerate(data["results"], start=1):
-        q = qb.convert_opentdb_question(item)
-        q["id"] = -i                      # temporary ids, never saved to your bank
-        out.append(normalize(q))
-    return out
+    """Fetch online questions through the shared API service."""
+    category_id = (
+        ONLINE_CATEGORIES.get(category)
+        if category != "all"
+        else None
+    )
+
+    api_difficulty = (
+        None
+        if difficulty == "all"
+        else difficulty
+    )
+
+    try:
+        questions = fetch_api_questions(
+            amount=count,
+            category_id=category_id,
+            difficulty=api_difficulty,
+        )
+    except APIServiceError:
+        return None
+
+    normalized = []
+
+    for i, question in enumerate(questions, start=1):
+        question["id"] = -i
+        normalized.append(normalize(question))
+
+    return normalized
 
 
 def fetch_questions(mode, category, difficulty, count):
